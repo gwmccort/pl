@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plist version="1.0">
+<dict>
+	<key>Major Version</key><integer>1</integer>
+	<key>Minor Version</key><integer>1</integer>
+	<key>Application Version</key><string>10.0.1</string>
+	<key>Features</key><integer>5</integer>
+	<key>Show Content Ratings</key><true/>
+	<key>Music Folder</key><string>file://localhost/Users/glen/Music/iTunes/iTunes%20Music/</string>
+	<key>Library Persistent ID</key><string>020E2CD7194C2D5B</string>
+	<key>Tracks</key>
+	<dict>
+		<key>643</key>
+		<dict>
+			<key>Track ID</key><integer>643</integer>
+			<key>Name</key><string>Cocaine Habit</string>
+			<key>Artist</key><string>Old Crow Medicine Show</string>
+			<key>Album Artist</key><string>Old Crow Medicine Show</string>
+			<key>Composer</key><string>Traditional</string>
+			<key>Album</key><string>Big Iron World</string>
+			<key>Genre</key><string>Bluegrass</string>
+			<key>Kind</key><string>MPEG audio file</string>
+			<key>Size</key><integer>3560133</integer>
+			<key>Total Time</key><integer>162768</integer>
+			<key>Track Number</key><integer>2</integer>
+			<key>Year</key><integer>2006</integer>
+			<key>Date Modified</key><date>2009-11-10T04:59:09Z</date>
+			<key>Date Added</key><date>2009-11-10T12:43:18Z</date>
+			<key>Bit Rate</key><integer>174</integer>
+			<key>Sample Rate</key><integer>44100</integer>
+			<key>Play Count</key><integer>3</integer>
+			<key>Play Date</key><integer>3342087189</integer>
+			<key>Play Date UTC</key><date>2009-11-26T18:33:09Z</date>
+			<key>Persistent ID</key><string>34809312755DECEC</string>
+			<key>Track Type</key><string>File</string>
+			<key>Location</key><string>file://localhost/Users/glen/Music/iTunes/iTunes%20Music/Old%20Crow%20Medicine%20Show/Big%20Iron%20World/02%20Cocaine%20Habit.mp3</string>
+			<key>File Folder Count</key><integer>4</integer>
+			<key>Library Folder Count</key><integer>1</integer>
+		</dict>
+		<key>6666</key>
+		<dict>
+			<key>Track ID</key><integer>666</integer>
+			<key>Name</key><string>Cocaine Habit2</string>
+			<key>Artist</key><string>Old Crow Medicine Show2</string>
+			<key>Album Artist</key><string>Old Crow Medicine Show2</string>
+			<key>Composer</key><string>Traditional2</string>
+			<key>Album</key><string>Big Iron World2</string>
+			<key>Genre</key><string>Bluegrass2</string>
+			<key>Kind</key><string>MPEG audio file</string>
+			<key>Size</key><integer>3560133</integer>
+			<key>Total Time</key><integer>162768</integer>
+			<key>Track Number</key><integer>2</integer>
+			<key>Year</key><integer>2006</integer>
+			<key>Date Modified</key><date>2009-11-10T04:59:09Z</date>
+			<key>Date Added</key><date>2009-11-10T12:43:18Z</date>
+			<key>Bit Rate</key><integer>174</integer>
+			<key>Sample Rate</key><integer>44100</integer>
+			<key>Play Count</key><integer>3</integer>
+			<key>Play Date</key><integer>3342087189</integer>
+			<key>Play Date UTC</key><date>2009-11-26T18:33:09Z</date>
+			<key>Persistent ID</key><string>34809312755DECEC</string>
+			<key>Track Type</key><string>File</string>
+			<key>Location</key><string>file://localhost/Users/glen/Music/iTunes/iTunes%20Music/Old%20Crow%20Medicine%20Show/Big%20Iron%20World/02%20Cocaine%20Habit.mp3</string>
+			<key>File Folder Count</key><integer>4</integer>
+			<key>Library Folder Count</key><integer>1</integer>
+		</dict>
+	</dict>
+	<key>Playlists</key>
+	<array>
+		<dict>
+			<key>Name</key><string>Test2</string>
+			<key>Playlist ID</key><integer>4901</integer>
+			<key>Playlist Persistent ID</key><string>972711D981099BF0</string>
+			<key>All Items</key><true/>
+			<key>Playlist Items</key>
+			<array>
+				<dict>
+					<key>Track ID</key><integer>643</integer>
+				</dict>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>

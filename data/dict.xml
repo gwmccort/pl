@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dict>
+	<key>Major Version</key><integer>1</integer>
+	<key>Minor Version</key><integer>1</integer>
+	<key>Application Version</key><string>10.0.1</string>
+	<key>Features</key><integer>5</integer>
+	<key>Show Content Ratings</key><true/>
+	<key>Music Folder</key><string>file://localhost/Users/glen/Music/iTunes/iTunes%20Music/</string>
+	<key>Library Persistent ID</key><string>020E2CD7194C2D5B</string>
+</dict>
