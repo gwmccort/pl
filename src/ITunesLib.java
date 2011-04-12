@@ -21,13 +21,14 @@ public class ITunesLib {
 
 
 	public static void main(String[] args) throws Exception {
-		log.info("starting main...");
+		log.trace("starting ITunesLib.main()...");
 		File file = new File(inFile);
 
 		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 		XMLEventReader r = inputFactory
 				.createXMLEventReader(new FileInputStream(file));
 		processITunesXML(r);
+		log.info("finished ITunesLib.main()!");
 	}
 
 	public static void main2(String[] args) throws Exception {
@@ -45,7 +46,7 @@ public class ITunesLib {
 					boolean isExtension = false;
 					boolean elementPrinted = false;
 					// if (!ATOM_NS.equals(start.getName().getNamespaceURI())) {
-					System.out.println("start:" + start.getName());
+					log.debug("start:" + start.getName());
 					isExtension = true;
 					elementPrinted = true;
 					// }
@@ -97,6 +98,7 @@ public class ITunesLib {
 	 */
 	private static void processITunesXML(XMLEventReader reader)
 			throws Exception {
+		log.trace("starting processITunesXML()...");
 		while (reader.hasNext()) {
 			XMLEvent event = reader.nextEvent();
 			// System.out.println(event.getEventType());
@@ -117,7 +119,7 @@ public class ITunesLib {
 	 * @throws Exception
 	 */
 	private static void processTracks(XMLEventReader reader) throws Exception {
-		System.out.println("starting processTracks() ...");
+		log.trace("starting processTracks() ...");
 
 		// skip first dict element
 		skipWhiteSpace(reader);
@@ -140,15 +142,14 @@ public class ITunesLib {
 				StartElement se = event.asStartElement();
 				if ("key".equals(se.getName().getLocalPart())) {
 					String kv = reader.getElementText();
-					System.out
-							.println("start:"
+					log.debug("start:"
 									+ event.asStartElement().getName()
 									+ " value:" + kv);
 					//getDict(reader);
 					Dict d = Dict.processDict(reader);
-					System.out.println(d);
+					log.info("track:" + d);
 				} else {
-					System.out.println("start:"
+					log.debug("start:"
 							+ event.asStartElement().getName());
 				}
 			}

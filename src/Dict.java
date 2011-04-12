@@ -5,14 +5,17 @@ import java.util.Map;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.apache.log4j.Logger;
+
 public class Dict {
 
-	HashMap<String, Object> m = new HashMap();
+	private HashMap<String, Object> m = new HashMap();
+	private static final Logger log = Logger.getLogger("Dict");
 
 	public void add(String key, Object value) {
 		m.put(key, value);
@@ -60,8 +63,9 @@ public class Dict {
 		}
 	}
 
-	public static Dict processDict(XMLEventReader reader) throws XMLStreamException {
-		System.out.println("**** dict called");
+	public static Dict processDict(XMLEventReader reader)
+			throws XMLStreamException {
+		log.trace("starting processDict() ...");
 		Dict results = new Dict();
 
 		// skip dict
@@ -77,39 +81,40 @@ public class Dict {
 
 				// read key
 				String key = reader.getElementText();
-				//System.out.println("found key:" + key);
+				// System.out.println("found key:" + key);
 				// System.out.println("start:" + e.asStartElement().getName()
 				// + ":" + key);
 
 				// skip whitespace
-				while (e.isCharacters() && e.asCharacters().isWhiteSpace()){
-					//System.out.println("skiping whitespace...");
+				while (e.isCharacters() && e.asCharacters().isWhiteSpace()) {
+					// System.out.println("skiping whitespace...");
 					e = reader.nextEvent();
 				}
 
 				// read value
 				e = reader.nextEvent();
 
-
 				// skip whitespace
-				while (e.isCharacters() && e.asCharacters().isWhiteSpace()){
-					//System.out.println("skiping whitespace...");
+				while (e.isCharacters() && e.asCharacters().isWhiteSpace()) {
+					// System.out.println("skiping whitespace...");
 					e = reader.nextEvent();
 				}
 
-				if (e.isStartElement() && "dict".equals(e.asStartElement().getName().getLocalPart())){
+				if (e.isStartElement()
+						&& "dict".equals(e.asStartElement().getName()
+								.getLocalPart())) {
 					results.add(key, processDict(reader));
-					//System.out.println("after processDict !!!!!!!!!!!!!!!!!!!");
-				}
-				else if (e.isStartElement() && "array".equals(e.asStartElement().getName().getLocalPart())){
-					//System.out.println("array processing TBD:");
+					// System.out.println("after processDict !!!!!!!!!!!!!!!!!!!");
+				} else if (e.isStartElement()
+						&& "array".equals(e.asStartElement().getName()
+								.getLocalPart())) {
+					// System.out.println("array processing TBD:");
 					while (reader.hasNext()) {
 						e = reader.nextEvent();
 					}
-				}
-				else if (e.isStartElement()){
+				} else if (e.isStartElement()) {
 					String type = e.asStartElement().getName().getLocalPart();
-//					System.out.println("type:" + type);
+					// System.out.println("type:" + type);
 					String valueString = reader.getElementText();
 					// System.out.println("\ttype:" + type + ":" + valueString);
 					if ("integer".equals(type))
@@ -123,17 +128,23 @@ public class Dict {
 					else if ("dict".equals(type))
 						results.add(key, processDict(reader));
 				} else {
-					System.out.println("not a start element!!!!!! :" + e.getEventType());
+					System.out.println("not a start element!!!!!! :"
+							+ e.getEventType());
 				}
-			} else if (e.isStartElement()) {
-				System.out.println("start element not type key:" + e.asStartElement().getName());
+			} else if (e.isStartElement()&& !"dict".equals(e.asStartElement().getName().getLocalPart())){
+				log.warn("start element not type key or dict:"
+						+ e.asStartElement().getName());
 			} else if (e.isCharacters() && e.asCharacters().isWhiteSpace()) {
-				//System.out.println("skiping white space");
+				// log.debug("skiping white space");
 				continue;
 			} else if (e.isEndElement()) {
-				System.out.println("found end tag:"
-						+ e.asEndElement().getName().getLocalPart());
-				return results;
+				EndElement ee = e.asEndElement();
+				if ("dict".equals(ee.getName().getLocalPart())) {
+					return results;
+				} else {
+					log.warn("found non dict end tag:"
+							+ e.asEndElement().getName().getLocalPart());
+				}
 			}
 		}
 		System.out.println("end of events");
