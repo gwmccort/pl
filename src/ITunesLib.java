@@ -4,7 +4,6 @@ import java.util.Iterator;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.Characters;
@@ -12,11 +11,17 @@ import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.apache.log4j.Logger;
+
 public class ITunesLib {
 
 	static final String inFile = "data/itunesLib.xml";
 
+	private static final Logger log = Logger.getLogger("ITunesLib");
+
+
 	public static void main(String[] args) throws Exception {
+		log.info("starting main...");
 		File file = new File(inFile);
 
 		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
@@ -123,6 +128,10 @@ public class ITunesLib {
 			event = reader.nextEvent();
 
 			if (event.isEndElement()) {
+				EndElement ee = event.asEndElement();
+				if ("dict".equals(ee.getName().getLocalPart())){
+					return;
+				}
 				System.out.println("end:" + event.asEndElement().getName());
 				// "Tracks".equals(event.asEndElement().getName().getLocalPart())){
 
@@ -135,7 +144,9 @@ public class ITunesLib {
 							.println("start:"
 									+ event.asStartElement().getName()
 									+ " value:" + kv);
-					getDict(reader);
+					//getDict(reader);
+					Dict d = Dict.processDict(reader);
+					System.out.println(d);
 				} else {
 					System.out.println("start:"
 							+ event.asStartElement().getName());
