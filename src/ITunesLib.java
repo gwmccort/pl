@@ -4,6 +4,8 @@ import java.util.Iterator;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.EndElement;
@@ -12,8 +14,10 @@ import javax.xml.stream.events.XMLEvent;
 
 public class ITunesLib {
 
+	static final String inFile = "data/itunesLib.xml";
+
 	public static void main(String[] args) throws Exception {
-		File file = new File("itunesLib.xml");
+		File file = new File(inFile);
 
 		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 		XMLEventReader r = inputFactory
@@ -80,6 +84,12 @@ public class ITunesLib {
 
 	}
 
+	/**
+	 * Process iTunes xml file
+	 *
+	 * @param reader
+	 * @throws Exception
+	 */
 	private static void processITunesXML(XMLEventReader reader)
 			throws Exception {
 		while (reader.hasNext()) {
@@ -95,9 +105,22 @@ public class ITunesLib {
 
 	}
 
+	/**
+	 * Process Tracks section
+	 *
+	 * @param reader
+	 * @throws Exception
+	 */
 	private static void processTracks(XMLEventReader reader) throws Exception {
+		System.out.println("starting processTracks() ...");
+
+		// skip first dict element
+		skipWhiteSpace(reader);
+		XMLEvent event;
+		event = reader.nextEvent();
+
 		while (reader.hasNext()) {
-			XMLEvent event = reader.nextEvent();
+			event = reader.nextEvent();
 
 			if (event.isEndElement()) {
 				System.out.println("end:" + event.asEndElement().getName());
@@ -105,10 +128,64 @@ public class ITunesLib {
 
 				// System.out.println("found end tracks");
 			} else if (event.isStartElement()) {
-				System.out.println("start:" + event.asStartElement().getName());
+				StartElement se = event.asStartElement();
+				if ("key".equals(se.getName().getLocalPart())) {
+					String kv = reader.getElementText();
+					System.out
+							.println("start:"
+									+ event.asStartElement().getName()
+									+ " value:" + kv);
+					getDict(reader);
+				} else {
+					System.out.println("start:"
+							+ event.asStartElement().getName());
+				}
 			}
 		}
+	}
 
+	private static void skipWhiteSpace(XMLEventReader reader)
+			throws XMLStreamException {
+		while (reader.hasNext()) {
+			XMLEvent e = reader.nextEvent();
+			if (e.isCharacters() && e.asCharacters().isWhiteSpace()) {
+				continue;
+			} else {
+				break;
+			}
+		}
+	}
+
+	private static void getDict(XMLEventReader reader) throws Exception {
+		System.out.println("starting getDic() ...");
+		while (reader.hasNext()) {
+			XMLEvent event = reader.nextEvent();
+			if (event.isEndElement()) {
+				EndElement ee = event.asEndElement();
+				System.out.println("end:" + ee.getName());
+				if ("dict".equals(ee.getName().getLocalPart())){
+					System.out.println("***** found end dict tag, exiting getDict");
+					return;
+				}
+
+				// "Tracks".equals(event.asEndElement().getName().getLocalPart())){
+
+				// System.out.println("found end tracks");
+			} else if (event.isStartElement()) {
+				StartElement se = event.asStartElement();
+				if ("key".equals(se.getName().getLocalPart())) {
+					String kv = reader.getElementText();
+					System.out
+							.println("start:"
+									+ event.asStartElement().getName()
+									+ " value:" + kv);
+				} else {
+					System.out.println("start:"
+							+ event.asStartElement().getName());
+				}
+			}
+
+		}
 	}
 
 }
