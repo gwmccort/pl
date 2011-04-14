@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.Characters;
@@ -18,7 +19,6 @@ public class ITunesLib {
 	static final String inFile = "data/itunesLib.xml";
 
 	private static final Logger log = Logger.getLogger("ITunesLib");
-
 
 	public static void main(String[] args) throws Exception {
 		log.trace("starting ITunesLib.main()...");
@@ -99,15 +99,88 @@ public class ITunesLib {
 	private static void processITunesXML(XMLEventReader reader)
 			throws Exception {
 		log.trace("starting processITunesXML()...");
+		try {
+			while (reader.hasNext()) {
+				XMLEvent event = reader.nextEvent();
+				// log.debug("event type:" + event.getEventType() + " isStart:"
+				// + event.isStartElement());
+
+				if (event.isStartElement()) {
+					// log.debug("event is start name:" +
+					// event.asStartElement().getName());
+					StartElement se = event.asStartElement();
+					if ("key".equals(se.getName().getLocalPart())) {
+						String tag = reader.getElementText();
+						if ("Tracks".equals(tag)) {
+							processTracks(reader);
+							log.debug("after processTracke()");
+						} else if ("Playlists".equals(tag)) {
+							processPlayLists(reader);
+							log.debug("after playlist");
+						}
+					}
+					// if ("key".equals(se.getName().getLocalPart())
+					// && "Tracks".equals(reader.getElementText())){
+					// processTracks(reader);
+					// log.debug("after processingTracks call");
+					// } else if ("key".equals(se.getName().getLocalPart())
+					// && "Playlists".equals(reader.getElementText())){
+					// System.out.println("found playlist!!!");
+					// processPlayList(reader);
+					// }
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * Process PlayLists section
+	 *
+	 * @param reader
+	 * @throws XMLStreamException
+	 */
+	private static void processPlayLists(XMLEventReader reader)
+			throws XMLStreamException {
+		log.trace("starting processPlayList ...");
 		while (reader.hasNext()) {
 			XMLEvent event = reader.nextEvent();
-			// System.out.println(event.getEventType());
+			if (event.isEndElement()) {
+				EndElement ee = event.asEndElement();
+				if ("array".equals(ee.getName().getLocalPart())) {
+					log.debug("***** found end array element");
+				}
+			}
 			if (event.isStartElement()) {
 				StartElement se = event.asStartElement();
-				if ("key".equals(se.getName().getLocalPart())
-						&& "Tracks".equals(reader.getElementText()))
-					processTracks(reader);
+				if ("dict".equals(se.getName().getLocalPart())) {
+					log.debug("$$$ found start dict");
+					processPlayListItem(reader);
+				} else {
+					log.debug("start name:" + event.asStartElement().getName());
+				}
 			}
+		}
+
+	}
+
+	private static void processPlayListItem(XMLEventReader reader)
+			throws XMLStreamException {
+		log.trace("starting processPlayListItem ...");
+		while (reader.hasNext()) {
+			XMLEvent event = reader.nextEvent();
+			log.debug("elementType:" + event.getEventType());
+			if (event.isStartElement()){
+				StartElement se = event.asStartElement();
+				if ("key".equals(se.getName().getLocalPart())){
+					log.debug("@@@ found key:" + reader.getElementText());
+				} else if ("array".equals(se.getName().getLocalPart())){
+					log.debug("### found array");
+				}
+			}
+
 		}
 
 	}
@@ -131,26 +204,22 @@ public class ITunesLib {
 
 			if (event.isEndElement()) {
 				EndElement ee = event.asEndElement();
-				if ("dict".equals(ee.getName().getLocalPart())){
+				if ("dict".equals(ee.getName().getLocalPart())) {
 					return;
 				}
-				System.out.println("end:" + event.asEndElement().getName());
-				// "Tracks".equals(event.asEndElement().getName().getLocalPart())){
-
-				// System.out.println("found end tracks");
 			} else if (event.isStartElement()) {
 				StartElement se = event.asStartElement();
 				if ("key".equals(se.getName().getLocalPart())) {
 					String kv = reader.getElementText();
-					log.debug("start:"
-									+ event.asStartElement().getName()
-									+ " value:" + kv);
-					//getDict(reader);
+					log.debug("start:" + event.asStartElement().getName()
+							+ " value:" + kv);
+					// getDict(reader);
 					Dict d = Dict.processDict(reader);
-					log.info("track:" + d);
+					//log.info("track dict:" + d);
+					Track t = new Track(d);
+					log.info("track:" + t);
 				} else {
-					log.debug("start:"
-							+ event.asStartElement().getName());
+					log.debug("start:" + event.asStartElement().getName());
 				}
 			}
 		}
@@ -175,8 +244,9 @@ public class ITunesLib {
 			if (event.isEndElement()) {
 				EndElement ee = event.asEndElement();
 				System.out.println("end:" + ee.getName());
-				if ("dict".equals(ee.getName().getLocalPart())){
-					System.out.println("***** found end dict tag, exiting getDict");
+				if ("dict".equals(ee.getName().getLocalPart())) {
+					System.out
+							.println("***** found end dict tag, exiting getDict");
 					return;
 				}
 

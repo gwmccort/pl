@@ -37,7 +37,7 @@
 			<key>File Folder Count</key><integer>4</integer>
 			<key>Library Folder Count</key><integer>1</integer>
 		</dict>
-		<key>6666</key>
+		<key>666</key>
 		<dict>
 			<key>Track ID</key><integer>666</integer>
 			<key>Name</key><string>Cocaine Habit2</string>
@@ -68,7 +68,7 @@
 	<key>Playlists</key>
 	<array>
 		<dict>
-			<key>Name</key><string>Test2</string>
+			<key>Name</key><string>PlayList Test1</string>
 			<key>Playlist ID</key><integer>4901</integer>
 			<key>Playlist Persistent ID</key><string>972711D981099BF0</string>
 			<key>All Items</key><true/>
@@ -76,6 +76,21 @@
 			<array>
 				<dict>
 					<key>Track ID</key><integer>643</integer>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>Name</key><string>PlayList Test2</string>
+			<key>Playlist ID</key><integer>4902</integer>
+			<key>Playlist Persistent ID</key><string>972711D981099BF0</string>
+			<key>All Items</key><true/>
+			<key>Playlist Items</key>
+			<array>
+				<dict>
+					<key>Track ID</key><integer>643</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>666</integer>
 				</dict>
 			</array>
 		</dict>

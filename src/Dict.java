@@ -21,6 +21,18 @@ public class Dict {
 		m.put(key, value);
 	}
 
+	public Object get(String key){
+		return m.get(key);
+	}
+
+	public int getInt(String key){
+		return ((Long) m.get(key)).intValue();
+	}
+
+	public String getString(String key){
+		return (String)m.get(key);
+	}
+
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append('[');
